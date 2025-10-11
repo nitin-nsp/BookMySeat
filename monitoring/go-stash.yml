@@ -1,0 +1,25 @@
+Clusters:
+  - Input:
+      Kafka:
+        Name: filebeat-logs
+        Brokers:
+          - "kafka:9092"
+        Group: go-stash
+        Topics:
+          - filebeat-logs
+        Consumers: 1
+    Filters:
+      - Action: drop
+        Conditions:
+          - Key: level
+            Value: debug
+            Type: contains
+    Output:
+      ElasticSearch:
+        Hosts:
+          - "http://elasticsearch:9200"
+        Index: "logs-{{yyyy.MM.dd}}"
+        MaxChunkBytes: 5242880
+        GracePeriod: 10s
+        Compress: false
+        TimeZone: UTC
