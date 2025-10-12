@@ -1,0 +1,79 @@
+syntax = "proto3";
+
+package payment;
+
+option go_package = "./payment";
+
+service PaymentService {
+  rpc InitiatePayment(InitiatePaymentRequest) returns (InitiatePaymentResponse);
+  rpc VerifyPayment(VerifyPaymentRequest) returns (VerifyPaymentResponse);
+  rpc ProcessRefund(ProcessRefundRequest) returns (ProcessRefundResponse);
+  rpc GetPaymentStatus(GetPaymentStatusRequest) returns (GetPaymentStatusResponse);
+}
+
+message Payment {
+  string id = 1;
+  string booking_id = 2;
+  int64 user_id = 3;
+  double amount = 4;
+  string status = 5;
+  string gateway = 6;
+  string transaction_id = 7;
+  int64 created_at = 8;
+}
+
+message Refund {
+  string id = 1;
+  string payment_id = 2;
+  double amount = 3;
+  string status = 4;
+  string reason = 5;
+  int64 created_at = 6;
+}
+
+message InitiatePaymentRequest {
+  string booking_id = 1;
+  int64 user_id = 2;
+  double amount = 3;
+}
+
+message InitiatePaymentResponse {
+  int32 code = 1;
+  string message = 2;
+  string payment_id = 3;
+  string order_id = 4;
+}
+
+message VerifyPaymentRequest {
+  string payment_id = 1;
+  string transaction_id = 2;
+  string signature = 3;
+}
+
+message VerifyPaymentResponse {
+  int32 code = 1;
+  string message = 2;
+  Payment payment = 3;
+}
+
+message ProcessRefundRequest {
+  string payment_id = 1;
+  double amount = 2;
+  string reason = 3;
+}
+
+message ProcessRefundResponse {
+  int32 code = 1;
+  string message = 2;
+  Refund refund = 3;
+}
+
+message GetPaymentStatusRequest {
+  string payment_id = 1;
+}
+
+message GetPaymentStatusResponse {
+  int32 code = 1;
+  string message = 2;
+  Payment payment = 3;
+}

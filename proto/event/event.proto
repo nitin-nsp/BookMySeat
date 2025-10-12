@@ -1,0 +1,145 @@
+syntax = "proto3";
+
+package event;
+
+option go_package = "./event";
+
+service EventService {
+  rpc CreateEvent(CreateEventRequest) returns (CreateEventResponse);
+  rpc GetEvent(GetEventRequest) returns (GetEventResponse);
+  rpc ListEvents(ListEventsRequest) returns (ListEventsResponse);
+  rpc CreateVenue(CreateVenueRequest) returns (CreateVenueResponse);
+  rpc CreateShow(CreateShowRequest) returns (CreateShowResponse);
+  rpc ListShows(ListShowsRequest) returns (ListShowsResponse);
+  rpc GetSeatLayout(GetSeatLayoutRequest) returns (GetSeatLayoutResponse);
+  rpc UpdateSeatStatus(UpdateSeatStatusRequest) returns (UpdateSeatStatusResponse);
+}
+
+message Event {
+  int64 id = 1;
+  string name = 2;
+  string description = 3;
+  string category = 4;
+  string image_url = 5;
+  int64 created_at = 6;
+}
+
+message Venue {
+  int64 id = 1;
+  string name = 2;
+  string city = 3;
+  string address = 4;
+  int32 total_seats = 5;
+}
+
+message Show {
+  int64 id = 1;
+  int64 event_id = 2;
+  int64 venue_id = 3;
+  int64 show_time = 4;
+  double base_price = 5;
+  int32 available_seats = 6;
+}
+
+message Seat {
+  int64 id = 1;
+  int64 show_id = 2;
+  string row = 3;
+  int32 number = 4;
+  string status = 5;
+  double price = 6;
+}
+
+message CreateEventRequest {
+  string name = 1;
+  string description = 2;
+  string category = 3;
+  string image_url = 4;
+}
+
+message CreateEventResponse {
+  int32 code = 1;
+  string message = 2;
+  Event event = 3;
+}
+
+message GetEventRequest {
+  int64 event_id = 1;
+}
+
+message GetEventResponse {
+  int32 code = 1;
+  string message = 2;
+  Event event = 3;
+}
+
+message ListEventsRequest {
+  string city = 1;
+  string category = 2;
+  int32 page = 3;
+  int32 page_size = 4;
+}
+
+message ListEventsResponse {
+  int32 code = 1;
+  string message = 2;
+  repeated Event events = 3;
+  int32 total = 4;
+}
+
+message CreateVenueRequest {
+  string name = 1;
+  string city = 2;
+  string address = 3;
+  int32 total_seats = 4;
+}
+
+message CreateVenueResponse {
+  int32 code = 1;
+  string message = 2;
+  Venue venue = 3;
+}
+
+message CreateShowRequest {
+  int64 event_id = 1;
+  int64 venue_id = 2;
+  int64 show_time = 3;
+  double base_price = 4;
+}
+
+message CreateShowResponse {
+  int32 code = 1;
+  string message = 2;
+  Show show = 3;
+}
+
+message ListShowsRequest {
+  int64 event_id = 1;
+}
+
+message ListShowsResponse {
+  int32 code = 1;
+  string message = 2;
+  repeated Show shows = 3;
+}
+
+message GetSeatLayoutRequest {
+  int64 show_id = 1;
+}
+
+message GetSeatLayoutResponse {
+  int32 code = 1;
+  string message = 2;
+  repeated Seat seats = 3;
+}
+
+message UpdateSeatStatusRequest {
+  int64 show_id = 1;
+  repeated int64 seat_ids = 2;
+  string status = 3;
+}
+
+message UpdateSeatStatusResponse {
+  int32 code = 1;
+  string message = 2;
+}

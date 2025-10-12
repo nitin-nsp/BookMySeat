@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package notification;
+
+option go_package = "./notification";
+
+service NotificationService {
+  rpc SendEmail(SendEmailRequest) returns (SendEmailResponse);
+  rpc SendSMS(SendSMSRequest) returns (SendSMSResponse);
+  rpc SendBookingConfirmation(SendBookingConfirmationRequest) returns (SendBookingConfirmationResponse);
+}
+
+message SendEmailRequest {
+  string to = 1;
+  string subject = 2;
+  string body = 3;
+  string template = 4;
+  map<string, string> data = 5;
+}
+
+message SendEmailResponse {
+  int32 code = 1;
+  string message = 2;
+}
+
+message SendSMSRequest {
+  string to = 1;
+  string message = 2;
+}
+
+message SendSMSResponse {
+  int32 code = 1;
+  string message = 2;
+}
+
+message SendBookingConfirmationRequest {
+  string booking_id = 1;
+  string user_email = 2;
+  string user_phone = 3;
+  string event_name = 4;
+  string show_time = 5;
+  string venue_name = 6;
+  repeated string seat_numbers = 7;
+  double total_amount = 8;
+}
+
+message SendBookingConfirmationResponse {
+  int32 code = 1;
+  string message = 2;
+}

@@ -1,0 +1,103 @@
+syntax = "proto3";
+
+package booking;
+
+option go_package = "./booking";
+
+service BookingService {
+  rpc ReserveSeats(ReserveSeatRequest) returns (ReserveSeatResponse);
+  rpc ConfirmBooking(ConfirmBookingRequest) returns (ConfirmBookingResponse);
+  rpc CancelBooking(CancelBookingRequest) returns (CancelBookingResponse);
+  rpc GetBooking(GetBookingRequest) returns (GetBookingResponse);
+  rpc ListBookings(ListBookingsRequest) returns (ListBookingsResponse);
+  rpc ReleaseSeats(ReleaseSeatRequest) returns (ReleaseSeatResponse);
+}
+
+message Booking {
+  string id = 1;
+  int64 user_id = 2;
+  int64 show_id = 3;
+  repeated int64 seat_ids = 4;
+  string status = 5;
+  double total_amount = 6;
+  int64 created_at = 7;
+  int64 expires_at = 8;
+}
+
+message Reservation {
+  string id = 1;
+  int64 user_id = 2;
+  int64 show_id = 3;
+  repeated int64 seat_ids = 4;
+  int64 expires_at = 5;
+}
+
+message ReserveSeatRequest {
+  int64 user_id = 1;
+  int64 show_id = 2;
+  repeated int64 seat_ids = 3;
+}
+
+message ReserveSeatResponse {
+  int32 code = 1;
+  string message = 2;
+  string reservation_id = 3;
+  int64 expires_at = 4;
+}
+
+message ConfirmBookingRequest {
+  string reservation_id = 1;
+  int64 user_id = 2;
+  string payment_id = 3;
+}
+
+message ConfirmBookingResponse {
+  int32 code = 1;
+  string message = 2;
+  Booking booking = 3;
+}
+
+message CancelBookingRequest {
+  string booking_id = 1;
+  int64 user_id = 2;
+}
+
+message CancelBookingResponse {
+  int32 code = 1;
+  string message = 2;
+}
+
+message GetBookingRequest {
+  string booking_id = 1;
+  int64 user_id = 2;
+}
+
+message GetBookingResponse {
+  int32 code = 1;
+  string message = 2;
+  Booking booking = 3;
+}
+
+message ListBookingsRequest {
+  int64 user_id = 1;
+  int32 page = 2;
+  int32 page_size = 3;
+}
+
+message ListBookingsResponse {
+  int32 code = 1;
+  string message = 2;
+  repeated Booking bookings = 3;
+  int32 total = 4;
+}
+
+message ReleaseSeatRequest {
+  string reservation_id = 1;
+  int64 show_id = 2;
+  repeated int64 seat_ids = 3;
+}
+
+message ReleaseSeatResponse {
+  int32 code = 1;
+  string message = 2;
+}
