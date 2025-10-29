@@ -1,25 +1,20 @@
-Name: user.rpc
-ListenOn: 0.0.0.0:9091
+Name: user-service
+Host: 0.0.0.0
+Port: 8081
 
-Postgres:
+Database:
   Host: localhost
   Port: 5432
   User: postgres
   Password: postgres
-  Database: user_db
-  MaxOpenConns: 100
-  MaxIdleConns: 10
+  DBName: user_db
+  SSLMode: disable
 
 Redis:
   Host: localhost:6379
-  Type: node
-  Pass: ""
+  Password: ""
+  DB: 0
 
 JWT:
-  Secret: "bookmyseat-jwt-secret-key-change-in-production"
-  Expire: 86400
-
-Log:
-  ServiceName: user-service
-  Mode: console
-  Level: info
+  Secret: your-secret-key-change-in-production
+  Expiry: 24h
